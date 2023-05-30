@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.RequirementMapper">
+    <select id="getRequirementList" resultType="com.example.demo.dto.RequirementDTO">
+        select * from requirement
+        <where>
+            is_deleted = 0
+            <if test="name!=null and name!=''">
+                and name like '%${name}%'
+            </if>
+            <if test="type!=null and type!=''">
+                and type = #{type}
+            </if>
+            <if test="state!=null and state!=''">
+                and state = #{state}
+            </if>
+            <if test="level!=null and level!=''">
+                and level = #{level}
+            </if>
+            <if test="team!=null and team!=''">
+                and team = #{team}
+            </if>
+            <if test="tester!=null and tester!=''">
+                and tester like '%${tester}%'
+            </if>
+            <if test="developer!=null and developer!=''">
+                and developer like '%${developer}%'
+            </if>
+            <if test="developerPM!=null and developerPM!=''">
+                and developerPM like '%${developerPM}%'
+            </if>
+            <if test="submitDateStart!=null and submitDateEnd!=null">
+                and submitDate between #{submitDateStart,jdbcType=DATE} and #{submitDateEnd,jdbcType=DATE}
+            </if>
+            <if test="publishDateStart!=null and publishDateEnd!=null">
+                and publishDate between #{publishDateStart,jdbcType=DATE} and #{publishDateEnd,jdbcType=DATE}
+            </if>
+            limit #{page},#{size};
+        </where>
+    </select>
+    <insert id="addRequirement" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO requirement
+        (name, type, level, state, team, developerPM, requirementCompleteDate, planSubmitDate,submitDate, planPublishDate, publishDate, selfTest, smokePass, tester, developer, productManager, requirementUrl,developUrl,jira,note)
+        VALUES
+            (#{name}, #{type}, #{level}, #{state}, #{team}, #{developerPM}, #{requirementCompleteDate}, #{planSubmitDate}, #{submitDate}, #{planPublishDate}, #{publishDate}, #{selfTest}, #{smokePass}, #{tester}, #{developer}, #{productManager}, #{requirementUrl}, #{developUrl}, #{jira}, #{note});
+    </insert>
+    <update id="updateRequirement">
+        update requirement
+        <set>
+            <trim suffixOverrides=",">
+                <if test="name !=null">name = #{name},</if>
+                <if test="type !=null">type = #{type},</if>
+                <if test="level !=null">level = #{level},</if>
+                <if test="state !=null">state = #{state},</if>
+                <if test="team !=null">team =#{team},</if>
+                <if test="developerPM !=null">developerPM =#{developerPM},</if>
+                <if test="requirementCompleteDate !=null">requirementCompleteDate = #{requirementCompleteDate,jdbcType=TIMESTAMP},</if>
+                <if test="planSubmitDate !=null">planSubmitDate = #{planSubmitDate,jdbcType=TIMESTAMP},</if>
+                <if test="submitDate !=null">submitDate = #{submitDate,jdbcType=TIMESTAMP},</if>
+                <if test="planPublishDate !=null">planPublishDate = #{planPublishDate,jdbcType=TIMESTAMP},</if>
+                <if test="publishDate !=null">publishDate = #{publishDate,jdbcType=TIMESTAMP},</if>
+                <if test="selfTest !=null">selfTest =#{selfTest},</if>
+                <if test="smokePass !=null">smokePass =#{smokePass},</if>
+                <if test="tester !=null">tester = #{tester},</if>
+                <if test="developer !=null">developer = #{developer},</if>
+                <if test="productManager !=null">productManager = #{productManager},</if>
+                <if test="requirementUrl !=null">requirementUrl = #{requirementUrl},</if>
+                <if test="developUrl !=null">developUrl =#{developUrl},</if>
+                <if test="jira !=null">jira =#{jira},</if>
+                <if test="note !=null">note = #{note},</if>
+            </trim>
+        </set>
+        where id = #{id};
+    </update>
+    <update id="deleteRequirement">
+        update requirement
+        <set> is_deleted = 1</set>
+        <where> id=#{id}</where>
+    </update>
+    <select id="getRequirementCount" resultType="java.lang.Integer">
+        select count(*) from requirement
+        <where>
+            is_deleted = 0
+            <if test="name!=null and name!=''">
+                and name like '%${name}%'
+            </if>
+            <if test="type!=null and type!=''">
+                and type = #{type}
+            </if>
+            <if test="state!=null and state!=''">
+                and state = #{state}
+            </if>
+            <if test="level!=null and level!=''">
+                and level = #{level}
+            </if>
+            <if test="team!=null and team!=''">
+                and team = #{team}
+            </if>
+            <if test="tester!=null and tester!=''">
+                and tester like '%${tester}%'
+            </if>
+            <if test="developer!=null and developer!=''">
+                and developer like '%${developer}%'
+            </if>
+            <if test="developerPM!=null and developerPM!=''">
+                and developerPM like '%${developerPM}%'
+            </if>
+            <if test="submitDateStart!=null and submitDateEnd!=null">
+                and submitDate between #{submitDateStart,jdbcType=DATE} and #{submitDateEnd,jdbcType=DATE}
+            </if>
+            <if test="publishDateStart!=null and publishDateEnd!=null">
+                and publishDate between #{publishDateStart,jdbcType=DATE} and #{publishDateEnd,jdbcType=DATE}
+            </if>
+        </where>
+    </select>
+</mapper>
